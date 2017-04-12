@@ -9,7 +9,7 @@ public class GameActivity extends AppCompatActivity {
     GameView game;
     private int touchX;
     private int touchY;
-    private int gameover;
+    private int gameover = -1;
     private final float SCROLL_THRESHOLD = 10;
     private boolean isOnClick;
 
@@ -51,8 +51,9 @@ public class GameActivity extends AppCompatActivity {
         if (gameover == 0){
             //fem les crides als fragments que toqui
             game.pintafons();
-        } else if (gameover > 0){
+        } else if (gameover < 0){
             //same
+            game.canviafons();
         }
         return true;
     }

@@ -44,6 +44,10 @@ public class Bola {
         return color;
     }
 
+    public void setColor(int color){
+        this.color = color;
+    }
+
     public void ferPas() {
         x += velX;
         y += velY;

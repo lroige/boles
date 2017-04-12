@@ -20,6 +20,8 @@ public class GameView extends SurfaceView implements Runnable{
     private int x, y, velX, velY, width, height, rad, color;
     private boolean run;
     private Thread thread;
+    //variables de prova, eliminar en acabar
+    private int background;
 
     public GameView(Context context) {
         super(context);
@@ -30,17 +32,18 @@ public class GameView extends SurfaceView implements Runnable{
         holder.setFixedSize(width, height);
         x = 200;
         y = 200;
-        rad = 60;
-        velX = 20;
-        velY = 16;
+        rad = 120;
+        velX = 1;
+        velY = 8;
         color = Color.RED;
+        background = Color.WHITE;
         bola = new Bola(x, y, velX, velY, color);
     }
 
     public void painting(Canvas c){
         Paint paint = new Paint();
         paint.setColor(bola.getColor());
-        c.drawColor(Color.BLACK);
+        c.drawColor(background);
         c.drawCircle(bola.getX(), bola.getY(), rad, paint);
         bola.ferPas();
         if ((bola.getX() + rad) >= width || (bola.getX() - rad) <= 0){
@@ -54,9 +57,11 @@ public class GameView extends SurfaceView implements Runnable{
     public int hitBall(int touchX, int touchY){
         boolean hit = false;//revisar si cal, crec que no
         int i = 0;
-        if (abs(touchX - bola.getX()) < rad && abs(touchY - bola.getY()) < rad){
+        if (abs(bola.getX() - touchX) < rad && abs(bola.getY() - touchY) < rad){
+            bola.setColor(Color.GREEN);
             return i;
         } else {
+            bola.setColor(Color.MAGENTA);
             return -1;
         }
     }
@@ -101,9 +106,12 @@ public class GameView extends SurfaceView implements Runnable{
     }
 
     public void pintafons() {
-        c = holder.lockCanvas();
-        c.drawColor(Color.BLACK);
-        holder.unlockCanvasAndPost(c);
+        background = Color.BLACK;
+        stopThread();
+    }
+
+    public void canviafons() {
+        background = Color.BLUE;
     }
 }
 
