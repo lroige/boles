@@ -16,7 +16,8 @@ import static java.lang.Math.abs;
 public class GameView extends SurfaceView implements Runnable{
     SurfaceHolder holder;
     Canvas c;
-    private int x, y, velX, velY, width, height, rad;
+    private Bola bola;
+    private int x, y, velX, velY, width, height, rad, color;
     private boolean run;
     private Thread thread;
 
@@ -29,31 +30,34 @@ public class GameView extends SurfaceView implements Runnable{
         holder.setFixedSize(width, height);
         x = 200;
         y = 200;
-        rad = 40;
-        velX = 10;
-        velY = 8;
+        rad = 60;
+        velX = 20;
+        velY = 16;
+        color = Color.RED;
+        bola = new Bola(x, y, velX, velY, color);
     }
 
     public void painting(Canvas c){
         Paint paint = new Paint();
-        paint.setColor(Color.RED);
+        paint.setColor(bola.getColor());
         c.drawColor(Color.BLACK);
-        c.drawCircle(x, y, rad, paint);
-        x += velX;
-        y += velY;
-        if ((x + rad) >= width || (x - rad) <= 0){
-            velX = -velX;
+        c.drawCircle(bola.getX(), bola.getY(), rad, paint);
+        bola.ferPas();
+        if ((bola.getX() + rad) >= width || (bola.getX() - rad) <= 0){
+            bola.canviVelX();
         }
-        if ((y + rad) >= height || (y - rad) <= 0){
-            velY = -velY;
+        if ((bola.getY() + rad) >= height || (bola.getY() - rad) <= 0){
+            bola.canviVelY();
         }
     }
 
-    public boolean hitBall(int touchX, int touchY){
-        if (abs(touchX - x) < rad){
-            return true;
+    public int hitBall(int touchX, int touchY){
+        boolean hit = false;//revisar si cal, crec que no
+        int i = 0;
+        if (abs(touchX - bola.getX()) < rad && abs(touchY - bola.getY()) < rad){
+            return i;
         } else {
-            return false;
+            return -1;
         }
     }
 
@@ -94,6 +98,12 @@ public class GameView extends SurfaceView implements Runnable{
 
     public void onStart(){
         setRun(true);
+    }
+
+    public void pintafons() {
+        c = holder.lockCanvas();
+        c.drawColor(Color.BLACK);
+        holder.unlockCanvasAndPost(c);
     }
 }
 
